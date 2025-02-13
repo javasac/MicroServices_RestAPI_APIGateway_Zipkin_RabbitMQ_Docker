@@ -1,8 +1,15 @@
 package com.sachin.Users.controller;
 import com.sachin.Users.model.CreateUserRequest;
+import com.sachin.Users.model.CreateUserResponse;
+import com.sachin.Users.service.UserServiceImpl;
+import com.sachin.Users.shared.UserDTO;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +19,9 @@ public class UsersControllers
     @Autowired
     private Environment env;
 
+    @Autowired
+    UserServiceImpl userService;
+
     @GetMapping("/status")
     public String status()
     {
@@ -19,9 +29,16 @@ public class UsersControllers
     }
 
     @PostMapping("/create")
-    public String createUser(@Valid @RequestBody CreateUserRequest cr)
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest cr)
     {
+        ModelMapper mm = new ModelMapper();
+        mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        UserDTO userDTO = mm.map(cr, UserDTO.class);
+        UserDTO createduserDTO = userService.createUser(userDTO);
+        CreateUserResponse cur = mm.map(createduserDTO, CreateUserResponse.class);
+
         System.out.println("Create User body is " + cr);
-        return cr.toString();
+        return ResponseEntity.status(HttpStatus.CREATED).body(cur);
     }
 }

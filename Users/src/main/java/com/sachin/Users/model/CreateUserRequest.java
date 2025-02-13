@@ -5,19 +5,19 @@ import jakarta.validation.constraints.Size;
 
 public class CreateUserRequest
 {
-    @NotNull(message = "First Name cannot be null.")
+    @NotNull(message="First Name cannot be null.")
     @Size(min=2, message = "First Name must not be less than 2 characters.")
     private String firstName;
 
-    @NotNull(message = "Last Name cannot be null.")
-    @Size(min=2, message = "Last Name must not be less than 2 characters.")
+    @NotNull(message="Last Name cannot be null.")
+    @Size(min=2, message="Last Name must not be less than 2 characters.")
     private String lastName;
 
-    @NotNull(message = "Password cannot be null.")
-    @Size(min=8, max=16, message = "Password length should be between 8 and 16 characters.")
+    @NotNull(message="Password cannot be null.")
+    @Size(min=8, max=16, message="Password length should be between 8 and 16 characters.")
     private String password;
 
-    @NotNull(message = "Email cannot be null.")
+    @NotNull(message="Email cannot be null.")
     @Email
     private String email;
 
